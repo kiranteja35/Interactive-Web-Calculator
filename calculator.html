@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+            align-items: center;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .main {
+            background-color: rgba(0, 0, 0, 0.54);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            background-color: rgb(205, 255, 206);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        button {
+            background-color: rgb(114, 92, 140);
+            cursor: pointer;
+            padding: 20px;
+            font-size: 20px;
+            border: none;
+            color: white;
+            border-radius: 5px;
+        }
+        .operator {
+            background-color: orange;
+        }
+        .display {
+            color: black;
+            font-size: 30px;
+            padding: 10px;
+            text-align: right;
+            width: 92%;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <input type="text" class="display" id="display" value="0" readonly>
+        <div class="buttons">
+            <button onclick="reciprocal()">1/x</button>
+            <button onclick="square()">x²</button>
+            <button onclick="squareRoot()">√x</button>
+            <button class="operator" onclick="backspace()">⌫</button>
+            <button onclick="num('%')">%</button>
+            <button onclick="Clear()">C</button>
+            <button onclick="ClearEntry()">CE</button>
+            <button class="operator" onclick="num('/')">÷</button>
+            <button onclick="num('7')">7</button>
+            <button onclick="num('8')">8</button>
+            <button onclick="num('9')">9</button>
+            <button class="operator" onclick="num('*')">×</button>
+            <button onclick="num('4')">4</button>
+            <button onclick="num('5')">5</button>
+            <button onclick="num('6')">6</button>
+            <button class="operator" onclick="num('-')">-</button>
+            <button onclick="num('1')">1</button>
+            <button onclick="num('2')">2</button>
+            <button onclick="num('3')">3</button>
+            <button class="operator" onclick="num('+')">+</button>
+            <button onclick="num('00')">00</button>
+            <button onclick="num('0')">0</button>
+            <button onclick="num('.')">.</button>
+            <button class="operator" onclick="calculate()">=</button>
+        </div>
+    </div>
+
+    <script>
+        function num(value) {
+            let display = document.getElementById("display");
+            if (display.value === "0") {
+                display.value = value;
+            } else {
+                display.value += value;
+            }
+        }
+
+        function Clear() {
+            document.getElementById("display").value = "0";
+        }
+
+        function ClearEntry() {
+            let display = document.getElementById("display");
+            let values = display.value.split(/[-+*/]/);
+            let lastValue = values[values.length - 1];
+            display.value = display.value.slice(0, -lastValue.length);
+        }
+
+        function backspace() {
+            let display = document.getElementById("display");
+            display.value = display.value.slice(0, -1);
+            if (display.value === "") {
+                display.value = "0";
+            }
+        }
+
+        function reciprocal() {
+            let display = document.getElementById("display");
+            let value = parseFloat(display.value);
+            if (value === 0) {
+                display.value = "Error";  
+            } else {
+                display.value = 1 / value;
+            }
+        }
+
+        function squareRoot() {
+            let display = document.getElementById("display");
+            let value = parseFloat(display.value);
+            if (value < 0) {
+                display.value = "Error";  
+            } else {
+                display.value = Math.sqrt(value);
+            }
+        }
+
+        function square() {
+            let display = document.getElementById("display");
+            let value = parseFloat(display.value);
+            display.value = Math.pow(value, 2);
+        }
+
+        function calculate() {
+            try {
+                let result = eval(document.getElementById("display").value.replace('÷', '/').replace('×', '*'));
+                document.getElementById("display").value = result;
+            } catch (error) {
+                document.getElementById("display").value = "Error";
+            }
+        }
+    </script>
+</body>
+</html>
